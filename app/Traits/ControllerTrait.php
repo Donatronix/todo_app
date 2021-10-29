@@ -12,10 +12,7 @@ use Illuminate\Http\Response;
  */
 trait ControllerTrait
 {
-    use AlertMessages;
-    use FlashMessages;
-    use HTMLMessages;
-    use ToastMessages;
+       use FlashMessages;
 
     /**
      * @var null
@@ -79,8 +76,7 @@ trait ControllerTrait
      */
     public function responseRedirect(string $route, string $message, string $type = 'info', bool $error = false, bool $withOldInputWhenError = false): RedirectResponse
     {
-        $this->setFlashMessage($message, $type);
-        $this->showFlashMessages();
+        $this->displayFlashMessage($message, $type);
 
         if ($error && $withOldInputWhenError) {
             return redirect()->back()->withInput();
@@ -98,8 +94,7 @@ trait ControllerTrait
      */
     public function responseRedirectBack(string $message, string $type = 'info', bool $error = false, bool $withOldInputWhenError = false): RedirectResponse
     {
-        $this->setFlashMessage($message, $type);
-        $this->showFlashMessages();
+        $this->displayFlashMessage($message, $type);
         if ($error && $withOldInputWhenError) {
             return redirect()->back()->withInput();
         }

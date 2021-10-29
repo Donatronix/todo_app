@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent\ToDo;
 
 use App\Models\ToDo\ToDo;
 use App\Repositories\Eloquent\BaseRepository;
-use App\Repositories\Interface\ToDo\ToDoRepositoryInterface;
+use App\Repositories\Contracts\ToDo\ToDoRepositoryInterface;
 
 /**
  *

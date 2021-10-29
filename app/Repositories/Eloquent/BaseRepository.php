@@ -2,12 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Interface\BaseRepositoryInterface;
+use App\Repositories\Contracts\BaseRepositoryInterface;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
 
 /**
  * Class BaseRepository.
@@ -106,6 +105,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
     protected array $scopes = [];
 
     /**
+     * Specify Model class name.
+     */
+    abstract public function model(): string;
+
+    /**
      * BaseRepository constructor.
      *
      * @throws Exception
@@ -115,18 +119,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $this->makeModel();
     }
 
-    /**
-     * Specify Model class name.
-     */
-    abstract public function model(): string;
-
-    /**
-     * @return array
-     */
-    protected function searchFields(): array
-    {
-        return Schema::getColumnListing($this->model->getTable());
-    }
 
     /**
      * @return Model|null

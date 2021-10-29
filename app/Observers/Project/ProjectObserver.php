@@ -3,6 +3,7 @@
 namespace App\Observers\Project;
 
 use App\Models\Project\Project;
+use Illuminate\Support\Str;
 
 class ProjectObserver
 {
@@ -15,6 +16,17 @@ class ProjectObserver
     public function created(Project $project)
     {
         //
+    }
+
+    /**
+     * Handle the Project "creating" event.
+     *
+     * @param  \App\Models\Project\Project  $project
+     * @return void
+     */
+    public function creating(Project $project)
+    {
+        $project->slug = Str::Slug($project->title);
     }
 
     /**

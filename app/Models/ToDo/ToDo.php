@@ -28,6 +28,20 @@ class ToDo extends Model
         'assigned_to_id',
         'project_id',
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+
+
+
     /**
      * Todo assigned by user
      *
@@ -35,7 +49,7 @@ class ToDo extends Model
      */
     public function assignedByUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'assigned_by_id', 'user_id');
+        return $this->belongsTo(User::class,'assigned_by_Id','id');
     }
 
     /**
@@ -45,7 +59,7 @@ class ToDo extends Model
      */
     public function assignedToUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'assigned_to_id', 'user_id');
+        return $this->belongsTo(User::class,'assigned_to_Id','id');
     }
 
     /**

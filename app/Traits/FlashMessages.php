@@ -13,6 +13,8 @@ trait FlashMessages
      */
     protected $errorMessages = [];
 
+    protected $type;
+
     /**
      * @var array
      */
@@ -38,7 +40,7 @@ trait FlashMessages
     protected function setFlashMessage($message, $type)
     {
         $model = 'infoMessages';
-
+        $this->type = $type;
         switch ($type) {
             case 'info': {
                     $model = 'infoMessages';
@@ -85,11 +87,23 @@ trait FlashMessages
      */
     protected function showFlashMessages()
     {
-        session()->flash('error', implode('<br/>', $this->errorMessages));
-        session()->flash('info', implode('<br/>', $this->infoMessages));
-        session()->flash('success', implode('<br/>', $this->successMessages));
-        session()->flash('warning', implode('<br/>', $this->warningMessages));
+        if ($this->type == 'info') {
+            session()->flash('info', implode('<br/>', $this->infoMessages));
+        }
+
+        if ($this->type == 'error') {
+            session()->flash('error', implode('<br/>', $this->errorMessages));
+        }
+
+        if ($this->type == 'success') {
+            session()->flash('success', implode('<br/>', $this->successMessages));
+        }
+        if ($this->type == 'warning') {
+            session()->flash('warning', implode('<br/>', $this->warningMessages));
+        }
+
     }
+
 
     /**
      * Display flash message
@@ -99,7 +113,7 @@ trait FlashMessages
      *
      * @return void
      */
-    protected function displayFlashMessage($message, $type)
+    public function displayFlashMessage($message, $type)
     {
         $this->setFlashMessage($message, $type);
         $this->showFlashMessages();

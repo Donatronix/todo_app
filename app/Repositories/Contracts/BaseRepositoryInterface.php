@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Repositories\Interface;
+namespace App\Repositories\Contracts;
 
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,7 +70,7 @@ interface BaseRepositoryInterface
      *
      * @return \Illuminate\Database\Eloquent\Builder|Model
      */
-    public function first(array $columns = ['*']): Model|\Illuminate\Database\Eloquent\Builder;
+    public function first(array $columns = ['*']): Model|Builder;
 
     /**
      * Get all the specified model records in the database.
@@ -87,14 +88,14 @@ interface BaseRepositoryInterface
      *
      * @return Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null
      */
-    public function getById($id, array $columns = ['*']): Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null;
+    public function getById($id, array $columns = ['*']): Model|Collection|Builder|array|null;
 
     /**
      * @param $id
      * @param array|string[] $columns
      * @return Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null
      */
-    public function find($id, array $columns = ['*']): Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null;
+    public function find($id, array $columns = ['*']): Model|Collection|Builder|array|null;
 
     /**
      * @param       $item
@@ -103,7 +104,7 @@ interface BaseRepositoryInterface
      *
      * @return \Illuminate\Database\Eloquent\Builder|Model|null
      */
-    public function getByColumn($item, $column, array $columns = ['*']): \Illuminate\Database\Eloquent\Builder|Model|null;
+    public function getByColumn($item, $column, array $columns = ['*']): Builder|Model|null;
 
     /**
      * @param int $limit
@@ -124,7 +125,7 @@ interface BaseRepositoryInterface
      *
      * @return Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null
      */
-    public function update(Model|int $id, array $data, array $options = []): Model|Collection|\Illuminate\Database\Eloquent\Builder|array|null;
+    public function update(Model|int $id, array $data, array $options = []): Model|Collection|Builder|array|null;
 
     /**
      * Set the query limit.

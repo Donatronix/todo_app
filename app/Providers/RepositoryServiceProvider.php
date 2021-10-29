@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repositories\Eloquent\BaseRepository;
 use App\Repositories\Eloquent\Project\ProjectRepository;
 use App\Repositories\Eloquent\ToDo\ToDoRepository;
-use App\Repositories\Interface\Project\ProjectRepositoryInterface;
-use App\Repositories\Interface\ToDo\ToDoRepositoryInterface;
+use App\Repositories\Eloquent\User\UserRepository;
+use App\Repositories\Contracts\BaseRepositoryInterface;
+use App\Repositories\Contracts\Project\ProjectRepositoryInterface;
+use App\Repositories\Contracts\ToDo\ToDoRepositoryInterface;
+use App\Repositories\Contracts\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -17,8 +21,10 @@ class RepositoryServiceProvider extends ServiceProvider
 {
 
     protected array $repositories = [
+        BaseRepositoryInterface::class => BaseRepository::class,
         ToDoRepositoryInterface::class => ToDoRepository::class,
         ProjectRepositoryInterface::class => ProjectRepository::class,
+        UserRepositoryInterface::class => UserRepository::class,
     ];
 
     /**

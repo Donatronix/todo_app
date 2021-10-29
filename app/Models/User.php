@@ -61,7 +61,7 @@ class User extends Authenticatable
      */
     public function toDosAssignedToMe(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ToDo::class, 'assigned_to_id');
+        return $this->hasMany(ToDo::class,'assigned_to_Id','id');
     }
     /**
      * To dos assigned by user
@@ -70,6 +70,6 @@ class User extends Authenticatable
      */
     public function toDosAssignedByMe(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ToDo::class, 'assigned_by_id');
+        return $this->hasMany(ToDo::class, 'assigned_by_id','id');
     }
 }

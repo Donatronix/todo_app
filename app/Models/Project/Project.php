@@ -20,11 +20,22 @@ class Project extends Model
         'title',
         'slug',
         'user_id',
+        'description'
     ];
 
-    public function todos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
     {
-        return $this->hasMany(ToDo::class, 'project_id');
+        return 'slug';
+    }
+
+    public function toDos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ToDo::class);
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

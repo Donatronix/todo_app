@@ -14,12 +14,12 @@ You might also want to include notes or even a checklist.
 
 Each Todo item belongs to a project.
 
-Users should be able to create new projects and choose which project their todos go into.
+Users should be able to create new projects and choose which project their toDos go into.
 
 Your API should have the following endpoints:
 
 View all projects
-View all todos in each project (probably just the title and due-date.. perhaps changing color for different priorities)
+View all toDos in each project (probably just the title and due-date.. perhaps changing color for different priorities)
 Get a single todo to see/edit its details
 Delete a todo
 Your project should be built on Laravel, hosted on GitHub and completed in 24 hours. Please let us know when you are done.
