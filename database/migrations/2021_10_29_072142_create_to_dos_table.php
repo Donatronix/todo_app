@@ -17,11 +17,11 @@ class CreateToDosTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->index();
-            $table->text ('description');
+            $table->text('description');
             $table->date('dueDate');
-            $table->enum ('priority',['low','medium','high']);
-            $table->enum ('status',['ongoing','completed']);
-            $table->date ('completed')->nullable();
+            $table->enum('priority',['low','medium','high']);
+            $table->enum('status',['ongoing','completed'])->default('ongoing');
+            $table->date('completedDate')->nullable();
             $table->unsignedBigInteger('assigned_by_id');
             $table->foreign('assigned_by_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('assigned_to_id');
