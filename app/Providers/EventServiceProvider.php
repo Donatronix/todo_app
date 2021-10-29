@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\ToDo\ToDo;
+use App\Models\Project\Project;
+use App\Observers\ToDo\ToDoObserver;
+use App\Observers\Project\ProjectObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +21,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
     ];
 
     /**
@@ -27,6 +31,13 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //Register model observers
+        $this->registerObservers();
+    }
+
+    public function registerObservers()
+    {
+        ToDo::observe(ToDoObserver::class);
+        Project::observe(ProjectObserver::class);
     }
 }
