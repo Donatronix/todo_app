@@ -20,7 +20,13 @@ class CreateToDosTable extends Migration
             $table->text ('description');
             $table->date('dueDate');
             $table->enum ('priority',['low','medium','high']);
-             $table->unsignedBigInteger('project_id');
+            $table->enum ('status',['ongoing','completed']);
+            $table->date ('completed')->nullable();
+            $table->unsignedBigInteger('assigned_by_id');
+            $table->foreign('assigned_by_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('assigned_to_id');
+            $table->foreign('assigned_to_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->timestamps();
         });
