@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Project\Project;
+use App\Models\ToDo\ToDo;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,4 +43,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Projects created by user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function projects(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Project::class, 'user_id');
+    }
+
+    /**
+     * To dos assigned to user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function toDosAssignedToMe(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ToDo::class, 'assigned_to_id');
+    }
+    /**
+     * To dos assigned by user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function toDosAssignedByMe(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ToDo::class, 'assigned_by_id');
+    }
 }
