@@ -9,6 +9,7 @@ use App\Repositories\Contracts\ToDo\ToDoRepositoryInterface;
 use App\Repositories\Contracts\User\UserRepositoryInterface;
 use App\ToDo\ToDoViewModel;
 use App\Traits\ControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -42,7 +43,10 @@ class ToDoController extends Controller
      */
     public function index(): View|Factory|Application
     {
-        return view('todo.index', ['toDos' => $this->toDos->all()]);
+        $toDos = $this->toDos->all()->map(function ($toDo, $key) {
+            return new ToDoViewModel($toDo, $this->projects, $this->users);
+        });
+        return view('todo.index', ['toDos' => $toDos]);
     }
 
     /**
@@ -145,5 +149,28 @@ class ToDoController extends Controller
         }
         DB::commit();
         return $this->responseRedirect('toDos.index', "ToDo was deleted successfully!", 'success');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \App\Models\ToDo\ToDo $toDo
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function completed(ToDo $toDo): RedirectResponse
+    {
+        DB::beginTransaction();
+        try {
+            $this->toDos->update($toDo, [
+                'completedDate' => Carbon::now(),
+                'status' => 'completed',
+            ]);
+        } catch (Throwable $th) {
+            DB::rollback();
+            return $this->responseRedirectBack("There was an error updating the todo item!<br/>" . $th->getMessage(), 'error', true, true);
+        }
+        DB::commit();
+        return $this->responseRedirect('toDos.index', "ToDo was updated successfully!", 'success');
     }
 }

@@ -2,16 +2,26 @@
 
 namespace App\ToDo;
 
+use App\Models\Project\Project;
 use App\Models\ToDo\ToDo;
+use App\Models\User;
 use App\Repositories\Contracts\Project\ProjectRepositoryInterface;
 use App\Repositories\Contracts\User\UserRepositoryInterface;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\ViewModels\ViewModel;
 
 class ToDoViewModel extends ViewModel
 {
+
+    public mixed $title;
+    public mixed $description;
+    public $dueDate;
+    public $priority;
+    public $status;
+    public $completedDate;
+    public User $assignedBy;
+    public User $assignedTo;
+    public Project $project;
+
     /**
      * @var \App\Repositories\Contracts\User\UserRepositoryInterface
      */
@@ -20,7 +30,7 @@ class ToDoViewModel extends ViewModel
     /**
      * @var \App\Models\ToDo\ToDo
      */
-    private ToDo $toDo;
+    public ToDo $toDo;
 
     /**
      * @var \App\Repositories\Contracts\Project\ProjectRepositoryInterface
@@ -37,38 +47,19 @@ class ToDoViewModel extends ViewModel
         $this->projects = $projects;
         $this->toDo = $toDo;
         $this->users = $users;
+
+
+        $this->title = $toDo->title;
+        $this->description = $toDo->description;
+        $this->dueDate = $toDo->dueDate;
+        $this->priority = $toDo->priority;
+        $this->status = $toDo->status;
+        $this->completedDate = $toDo->completedDate;
+        $this->assignedBy = $this->users->find($toDo->assigned_by_id);
+        $this->assignedTo = $this->users->find($toDo->assigned_to_id);
+        $this->project = $this->projects->find($toDo->project_id);
     }
 
 
-    /**
-     * @return \App\Models\ToDo\ToDo
-     */
-    public function todo(): ToDo
-    {
-        return $this->toDo;
-    }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
-     */
-    public function todoAssignedBy(): Model|Collection|Builder|array|null
-    {
-        return $this->users->find($this->todo()->assigned_by_id);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
-     */
-    public function todoAssignedTo(): Model|Collection|Builder|array|null
-    {
-        return $this->users->find($this->todo()->assigned_to_id);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
-     */
-    public function project(): Model|Collection|Builder|array|null
-    {
-        return $this->projects->find($this->todo()->project_id);
-    }
 }

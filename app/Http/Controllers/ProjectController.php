@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\ProjectRequest;
 use App\Models\Project\Project;
 use App\Repositories\Contracts\Project\ProjectRepositoryInterface;
+use App\Repositories\Contracts\User\UserRepositoryInterface;
+use App\ToDo\ToDoViewModel;
 use App\Traits\ControllerTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -17,11 +19,20 @@ class ProjectController extends Controller
 {
     use ControllerTrait;
 
+    /**
+     * @var \App\Repositories\Contracts\Project\ProjectRepositoryInterface
+     */
     protected ProjectRepositoryInterface $projects;
 
-    public function __construct(ProjectRepositoryInterface $projects)
+    /**
+     * @var \App\Repositories\Contracts\User\UserRepositoryInterface
+     */
+    private UserRepositoryInterface $users;
+
+    public function __construct(ProjectRepositoryInterface $projects,UserRepositoryInterface $users)
     {
         $this->projects = $projects;
+        $this->users = $users;
     }
 
     /**
@@ -73,7 +84,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project): View|Factory|Application
     {
-        return view('project.show', ['project' => $project]);
+        $toDos=$project->toDos->map(function ($toDo, $key) {
+            return new ToDoViewModel($toDo, $this->projects, $this->users);
+        });
+        return view('project.show', ['project' => $project,'toDos' => $toDos]);
     }
 
     /**
